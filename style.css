@@ -10,3 +10,35 @@ h1, h3 {
 #todo-input {
     display: inline-block;
 }
+
+.todo {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10px;
+    color: white;
+    background-color: #321637;
+    border-radius: 15px 50px;
+    padding: 20px;
+    display: flex;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.todo .task {
+    width: 90%;
+}
+
+.todo .checkbox {
+    width: 10%;
+    display: inline;
+    vertical-align: middle;
+}
+
+#todo-list .task-title {
+    font-size: 20px;
+}
+
+#todo-list .task-description {
+    font-size: 16px;
+}
+
