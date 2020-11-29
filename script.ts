@@ -3,13 +3,8 @@ interface Task {
     description: string, 
 }
 
-interface Todo {
-    todos: Task[],
-}
-
-var currentTodo: Todo = {
-    "todos": [{title: "Test", description: "Test description"}]
-};
+type Todo = Map<number, Task>; 
+var currentTodo: Todo = new Map<number, Task>();
 
 function addTaskToList(): void {
     let taskTitle: string = (<HTMLInputElement>document.getElementById("todo-title")).value;
@@ -23,41 +18,66 @@ function addTask(title: string, description: string): void {
         "description": description
     };
 
-    currentTodo.todos.push(newTask);
-    displayTasks();
+    let key = currentTodo.size + 1;
+    currentTodo.set(key, newTask);
+    insertNewTaskHTML(newTask);
 }
 
-function deleteTask(): void {
-    currentTodo.todos.pop();
+function deleteTask(taskId: number): void {
+    currentTodo.delete(taskId);
+}
+
+function insertNewTaskHTML(task: Task): void {
+    const listDiv = document.getElementById("todo-list");
+
+    const todo = document.createElement("div")
+    todo.className = "todo"
+
+    const checkboxDiv = document.createElement("div")
+    checkboxDiv.className = "checkbox"
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.value = currentTodo.size + ""; 
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            let taskId = parseInt(checkbox.value)
+            if (!isNaN(taskId))
+                deleteTask(taskId)
+            let parentDiv = checkboxDiv.parentElement;
+            setTimeout(() => {
+                if (parentDiv)
+                    parentDiv.remove();
+            }, 500)
+        }
+    })
+
+    checkboxDiv.appendChild(checkbox)
+
+    const actionDiv = document.createElement("div")
+    actionDiv.className = "task"
+    const title = document.createElement("p")
+    title.className = "task-title"
+    const description = document.createElement("p")
+    description.className = "task-description"
+    actionDiv.appendChild(title)
+    actionDiv.appendChild(description)
+
+    title.innerHTML = task.title;
+    description.innerHTML = task.description;
+
+    todo.appendChild(checkboxDiv)
+    todo.appendChild(actionDiv)
+
+    listDiv?.appendChild(todo)
 }
 
 function displayTasks(): void {
     const listDiv = document.getElementById("todo-list");
-    currentTodo.todos.forEach(element => {
-        const todo = document.createElement("div")
-        todo.className = "todo"
+    
+    if (listDiv)
+        listDiv.innerHTML = '';
 
-        const checkboxDiv = document.createElement("div")
-        checkboxDiv.className = "checkbox"
-        const checkbox = document.createElement("input")
-        checkbox.type = "checkbox"
-        checkboxDiv.appendChild(checkbox)
-
-        const actionDiv = document.createElement("div")
-        actionDiv.className = "task"
-        const title = document.createElement("p")
-        title.className = "task-title"
-        const description = document.createElement("p")
-        description.className = "task-description"
-        actionDiv.appendChild(title)
-        actionDiv.appendChild(description)
-
-        title.innerHTML = element.title;
-        description.innerHTML = element.description;
-
-        todo.appendChild(checkboxDiv)
-        todo.appendChild(actionDiv)
-
-        listDiv?.appendChild(todo)
+    currentTodo.forEach(element => {
+        insertNewTaskHTML(element);
     });
 }

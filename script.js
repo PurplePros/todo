@@ -1,6 +1,4 @@
-var currentTodo = {
-    "todos": [{ title: "Test", description: "Test description" }]
-};
+var currentTodo = new Map();
 function addTaskToList() {
     var taskTitle = document.getElementById("todo-title").value;
     var taskDescription = document.getElementById("todo-description").value;
@@ -11,34 +9,55 @@ function addTask(title, description) {
         "title": title,
         "description": description
     };
-    currentTodo.todos.push(newTask);
-    displayTasks();
+    // currentTodo.todos.push(newTask);
+    var key = currentTodo.size + 1;
+    currentTodo.set(key, newTask);
+    insertNewTaskHTML(newTask);
 }
-function deleteTask() {
-    currentTodo.todos.pop();
+function deleteTask(taskId) {
+    currentTodo["delete"](taskId);
+}
+function insertNewTaskHTML(task) {
+    var listDiv = document.getElementById("todo-list");
+    var todo = document.createElement("div");
+    todo.className = "todo";
+    var checkboxDiv = document.createElement("div");
+    checkboxDiv.className = "checkbox";
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = currentTodo.size + "";
+    checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+            var taskId = parseInt(checkbox.value);
+            if (!isNaN(taskId))
+                deleteTask(taskId);
+            var parentDiv_1 = checkboxDiv.parentElement;
+            setTimeout(function () {
+                if (parentDiv_1)
+                    parentDiv_1.remove();
+            }, 1000);
+        }
+    });
+    checkboxDiv.appendChild(checkbox);
+    var actionDiv = document.createElement("div");
+    actionDiv.className = "task";
+    var title = document.createElement("p");
+    title.className = "task-title";
+    var description = document.createElement("p");
+    description.className = "task-description";
+    actionDiv.appendChild(title);
+    actionDiv.appendChild(description);
+    title.innerHTML = task.title;
+    description.innerHTML = task.description;
+    todo.appendChild(checkboxDiv);
+    todo.appendChild(actionDiv);
+    listDiv === null || listDiv === void 0 ? void 0 : listDiv.appendChild(todo);
 }
 function displayTasks() {
     var listDiv = document.getElementById("todo-list");
-    currentTodo.todos.forEach(function (element) {
-        var todo = document.createElement("div");
-        todo.className = "todo";
-        var checkboxDiv = document.createElement("div");
-        checkboxDiv.className = "checkbox";
-        var checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkboxDiv.appendChild(checkbox);
-        var actionDiv = document.createElement("div");
-        actionDiv.className = "task";
-        var title = document.createElement("p");
-        title.className = "task-title";
-        var description = document.createElement("p");
-        description.className = "task-description";
-        actionDiv.appendChild(title);
-        actionDiv.appendChild(description);
-        title.innerHTML = element.title;
-        description.innerHTML = element.description;
-        todo.appendChild(checkboxDiv);
-        todo.appendChild(actionDiv);
-        listDiv === null || listDiv === void 0 ? void 0 : listDiv.appendChild(todo);
+    if (listDiv)
+        listDiv.innerHTML = '';
+    currentTodo.forEach(function (element) {
+        insertNewTaskHTML(element);
     });
 }
