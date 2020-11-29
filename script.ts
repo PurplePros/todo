@@ -5,6 +5,7 @@ interface Task {
 
 type Todo = Map<number, Task>; 
 var currentTodo: Todo = new Map<number, Task>();
+var completedTodo: Todo = new Map<number, Task>();
 
 function addTaskToList(): void {
     let taskTitle: string = (<HTMLInputElement>document.getElementById("todo-title")).value;
@@ -27,6 +28,29 @@ function deleteTask(taskId: number): void {
     currentTodo.delete(taskId);
 }
 
+function insertCompletedTaskHTML(task: Task): void {
+    const listDiv = document.getElementById("completed-list");
+
+    const todo = document.createElement("div")
+    todo.className = "completed-todo"
+
+    const actionDiv = document.createElement("div")
+    actionDiv.className = "task"
+    const title = document.createElement("p")
+    title.className = "task-title"
+    const description = document.createElement("p")
+    description.className = "task-description"
+    actionDiv.appendChild(title)
+    actionDiv.appendChild(description)
+
+    title.innerHTML = task.title;
+    description.innerHTML = task.description;
+
+    todo.appendChild(actionDiv)
+
+    listDiv?.appendChild(todo)
+}
+
 function insertNewTaskHTML(task: Task): void {
     const listDiv = document.getElementById("todo-list");
 
@@ -45,9 +69,15 @@ function insertNewTaskHTML(task: Task): void {
                 deleteTask(taskId)
             let parentDiv = checkboxDiv.parentElement;
             setTimeout(() => {
-                if (parentDiv)
+                if (parentDiv) {
                     parentDiv.remove();
-            }, 500)
+                }
+            }, 250)
+
+            completedTodo.set(taskId, task)
+            setTimeout(() => {
+                insertCompletedTaskHTML(task)
+            }, 500);
         }
     })
 

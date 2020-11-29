@@ -2,26 +2,44 @@
     margin: 0;
 }
 
-h1, h3 {
+h1, h4 {
     font-weight: bold;
     text-align: center;
 }
 
 #todo-input {
-    display: inline-block;
+    text-align: center;
+    margin-top: 20px;
 }
 
-.todo {
+h3 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; 
+}
+
+.todo, .completed-todo {
     width: 60%;
     margin: 0 auto;
     margin-top: 10px;
     color: white;
-    background-color: #321637;
     border-radius: 15px 50px;
     padding: 20px;
     display: flex;
     vertical-align: middle;
     text-align: center;
+}
+
+.todo {
+    background-color: #321637;
+}
+
+.completed-todo {
+    background-color: #006400;
+}
+
+.completed-todo .task {
+    width: 100%;
 }
 
 .todo .task {
@@ -34,11 +52,11 @@ h1, h3 {
     vertical-align: middle;
 }
 
-#todo-list .task-title {
+.task-title {
     font-size: 20px;
 }
 
-#todo-list .task-description {
+.task-description {
     font-size: 16px;
 }
 
