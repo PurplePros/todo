@@ -1,0 +1,27 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "A simple todo list to practice TypeScript and web development",
+  "main": "script.js",
+  "dependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PurplePros/todo.git"
+  },
+  "keywords": [
+    "todo"
+  ],
+  "author": "Catherine Li",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PurplePros/todo/issues"
+  },
+  "homepage": "https://github.com/PurplePros/todo#readme"
+}
